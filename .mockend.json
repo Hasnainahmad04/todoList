@@ -1,7 +1,27 @@
 {
   "todos": {
     "_": {
-      "posts": [{ "title": "Title 1" }, { "title": "Title 2" }]
+      "items": 10,
+      "data": [
+        {
+          "title": "First title",
+          "body": "You can use your own data or have random values generated for you."
+        },
+        {
+          "title": "Second title",
+          "body": "The rest of the posts will have random values"
+        }
+      ]
+    },
+    "title": {
+      "loremWords": {
+        "minLength": 5,
+        "maxLength": 20
+      }
+    },
+    "isCompleted": {
+      "boolean": {}
     }
+    
   }
 }
