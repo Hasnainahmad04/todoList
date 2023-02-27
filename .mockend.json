@@ -1,7 +1,7 @@
 {
   "Book": {
     "_": {
-      "data": [{ "title": "Title 1" }, { "title": "Title 2" }]
+      "posts": [{ "title": "Title 1" }, { "title": "Title 2" }]
     }
   }
 }
