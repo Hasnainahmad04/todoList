@@ -1,9 +1,7 @@
 {
-  "todos": {
+  "Book": {
     "_": {
-      "items": 10,
-      "data": [{ "id": 10, "author": "Shakespeare" }]
-    },
-    "title": { "loremWords": { "minLength": 5, "maxLength": 20 } }
+      "data": [{ "title": "Title 1" }, { "title": "Title 2" }]
+    }
   }
 }
