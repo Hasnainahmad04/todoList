@@ -1,5 +1,5 @@
 {
-  "Book": {
+  "todos": {
     "_": {
       "posts": [{ "title": "Title 1" }, { "title": "Title 2" }]
     }
