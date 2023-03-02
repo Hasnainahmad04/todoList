@@ -1,9 +1,14 @@
 import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {StyleSheet} from 'react-native';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import Todo from './src/Screen/Todo';
 
 function App() {
-  return <Todo />;
+  return (
+    <GestureHandlerRootView style={{flex: 1}}>
+      <Todo />
+    </GestureHandlerRootView>
+  );
 }
 
 const styles = StyleSheet.create({
