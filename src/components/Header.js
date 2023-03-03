@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, StyleSheet, Text} from 'react-native';
+import colors from '../Assets/colors';
 
 function Header(props) {
   let date = new Date().toLocaleDateString('en-GB', {
@@ -8,6 +9,7 @@ function Header(props) {
     month: 'long',
     day: 'numeric',
   });
+
   return (
     <View style={styles['container']}>
       <Text style={styles['headerText']}>Todo </Text>
@@ -19,13 +21,13 @@ function Header(props) {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     flexDirection: 'row',
     height: 50,
     paddingHorizontal: 20,
   },
   headerText: {
-    color: '#1F8A70',
+    color: colors.primary,
     flex: 1,
     fontSize: 20,
   },

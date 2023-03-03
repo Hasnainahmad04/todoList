@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import {Swipeable} from 'react-native-gesture-handler';
+import colors from '../Assets/colors';
 
 function TodoItem({item, swipeAction, handleUpdate}) {
   let style = item.completed ? styles['completed'] : styles['text'];
@@ -16,7 +17,7 @@ function TodoItem({item, swipeAction, handleUpdate}) {
           disabled={item.completed}
           isChecked={item.completed}
           size={30}
-          fillColor="#1F8A70"
+          fillColor={colors.primary}
           unfillColor="#fff"
           innerIconStyle={{borderWidth: 2, borderColor: '#023020'}}
           onPress={handleUpdate}
@@ -32,14 +33,14 @@ function TodoItem({item, swipeAction, handleUpdate}) {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    backgroundColor: '#eee',
+    backgroundColor: colors.secondary,
     flexDirection: 'row',
     marginVertical: 10,
     borderRadius: 10,
   },
   taskDone: {
     padding: 20,
-    backgroundColor: '#1F8A70',
+    backgroundColor: colors.primary,
     flexDirection: 'row',
     marginVertical: 10,
     borderRadius: 10,
@@ -47,11 +48,11 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 20,
-    color: '#1F8A70',
+    color: colors.primary,
     flex: 1,
   },
   completed: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 20,
   },
 });

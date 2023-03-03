@@ -7,21 +7,21 @@ import {
   Text,
   ToastAndroid,
 } from 'react-native';
+
 import todoServices from '../api/todoServices';
 import TodoDeleteAction from '../components/TodoDeleteAction';
 import TodoItem from '../components/TodoItem';
 import Header from '../components/Header';
 import AddBtn from '../components/AddBtn';
 import AppModal from '../components/AppModal';
-import axios from 'axios';
+import colors from '../Assets/colors';
 
 function Todo(props) {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [page, setPage] = useState(1);
-  const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     fetchData(page);
@@ -39,6 +39,31 @@ function Todo(props) {
   };
 
   const handleModal = () => setModal(true);
+
+  const handleAdd = async task => {
+    try {
+      const newaddedTask = await todoServices.addTodo(task);
+      const state = [...data];
+      setData([newaddedTask, ...state]);
+    } catch (error) {
+      alert('An invalid Error Occured');
+      console.log(error);
+    }
+  };
+
+  const handleUpdate = async id => {
+    const clone = [...data];
+    const index = clone.findIndex(item => item.id === id);
+    clone[index] = {...clone[index], completed: true};
+    setData(clone);
+    try {
+      const data = await todoServices.updateTodo(id);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+      setData(data);
+    }
+  };
 
   const handlDelete = async id => {
     const original = [...data];
@@ -59,31 +84,6 @@ function Todo(props) {
     }
   };
 
-  const handleUpdate = async id => {
-    const clone = [...data];
-    const index = clone.findIndex(item => item.id === id);
-    clone[index] = {...clone[index], completed: true};
-    setData(clone);
-    try {
-      const data = await todoServices.updateTodo(id);
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-      setData(data);
-    }
-  };
-
-  const handleAdd = async task => {
-    try {
-      const newaddedTask = await todoServices.addTodo(task);
-      const state = [...data];
-      setData([newaddedTask, ...state]);
-    } catch (error) {
-      alert('An invalid Error Occured');
-      console.log(error);
-    }
-  };
-
   const onEndReached = async () => {
     setPage(prevPage => prevPage + 1);
   };
@@ -91,9 +91,7 @@ function Todo(props) {
     <>
       <Header />
       <View style={styles['container']}>
-        <Text style={{fontSize: 20, color: '#1F8A70', padding: 10}}>
-          Today's Tasks
-        </Text>
+        <Text style={styles['headerText']}>Today's Tasks</Text>
 
         <View style={styles['listContainer']}>
           <FlatList
@@ -113,15 +111,12 @@ function Todo(props) {
             ListFooterComponent={ActivityIndicator}
           />
         </View>
-        {loading && (
-          <View style={styles['loadingContainer']}>
-            <ActivityIndicator size={50} color={'#1F8A70'} />
-          </View>
-        )}
+
         <View>
           <AddBtn onPress={handleModal} />
         </View>
       </View>
+
       <AppModal
         modalVisible={modal}
         handleClose={() => setModal(false)}
@@ -135,11 +130,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
   },
+
+  headerText: {fontSize: 20, color: colors.primary, padding: 10},
+
   listContainer: {flex: 1, height: 'auto'},
+
   loadingContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     justifyContent: 'center',
     alignItems: 'center',
     flex: 2,
