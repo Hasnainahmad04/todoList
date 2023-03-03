@@ -1,12 +1,13 @@
 import React from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
+import colors from '../Assets/colors';
 
 function AddBtn({onPress}) {
   return (
     <View style={styles['btnContainer']}>
       <TouchableOpacity style={styles['button']} onPress={onPress}>
-        <Entypo name="plus" size={30} color="#fff" />
+        <Entypo name="plus" size={30} color={colors.white} />
       </TouchableOpacity>
     </View>
   );
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 35,
-    backgroundColor: '#1F8A70',
+    backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
   },

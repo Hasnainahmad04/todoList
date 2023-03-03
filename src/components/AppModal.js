@@ -8,6 +8,7 @@ import {
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import colors from '../Assets/colors';
 
 const AppModal = ({modalVisible, handleClose, handleAdd}) => {
   const [task, setTask] = useState({completed: false, title: ''});
@@ -48,7 +49,7 @@ const AppModal = ({modalVisible, handleClose, handleAdd}) => {
             </Text>
           </TouchableOpacity>
         </View>
-        <Text style={{fontSize: 20, marginVertical: 10, color: '#fff'}}>
+        <Text style={{fontSize: 20, marginVertical: 10, color: colors.white}}>
           What Are You Doing Today ?
         </Text>
         <View
@@ -64,10 +65,10 @@ const AppModal = ({modalVisible, handleClose, handleAdd}) => {
           <TouchableOpacity
             style={styles['addButton']}
             onPress={() => onSubmit(task)}>
-            <Text style={{fontSize: 20, color: '#1F8A70'}}>Add</Text>
+            <Text style={{fontSize: 20, color: colors.primary}}>Add</Text>
           </TouchableOpacity>
         </View>
-        <Text style={{fontSize: 18, color: '#fff', padding: 10}}>
+        <Text style={{fontSize: 18, color: colors.white, padding: 10}}>
           {errors['title']}
         </Text>
       </View>
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   modal: {
-    backgroundColor: '#1F8A70',
+    backgroundColor: colors.primary,
     height: '30%',
     marginTop: 'auto',
     borderTopLeftRadius: 20,
@@ -98,13 +99,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   headreText: {
-    color: '#fff',
+    color: colors.white,
     fontSize: 18,
     flex: 1,
   },
   closeButton: {
     fontSize: 16,
-    color: '#fff',
+    color: colors.white,
     alignSelf: 'flex-end',
   },
   addButton: {
@@ -112,13 +113,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     margin: 10,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     height: 50,
     borderRadius: 10,
   },
   inputBox: {
     width: '80%',
-    backgroundColor: '#eee',
+    backgroundColor: colors.white,
     fontSize: 18,
     padding: 15,
     alignItems: 'center',
