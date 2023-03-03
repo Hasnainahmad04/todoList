@@ -10,9 +10,14 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '../Assets/colors';
 
-const AppModal = ({modalVisible, handleClose, handleAdd}) => {
-  const [task, setTask] = useState({completed: false, title: ''});
-
+const AppModal = ({
+  modalVisible,
+  handleClose,
+  handleAdd,
+  handleEdit,
+  task,
+  setTask,
+}) => {
   const [errors, setErrors] = useState({});
   const handleInput = (name, text) => {
     const clone = {...task};
@@ -62,11 +67,14 @@ const AppModal = ({modalVisible, handleClose, handleAdd}) => {
             style={styles['inputBox']}
             placeholder="Add Task ...."
             onChangeText={text => handleInput('title', text)}
+            value={task.title}
           />
           <TouchableOpacity
             style={styles['addButton']}
             onPress={() => onSubmit(task)}>
-            <Text style={{fontSize: 20, color: colors.primary}}>Add</Text>
+            <Text style={{fontSize: 20, color: colors.primary}}>
+              {task.id ? 'Update' : 'Add'}
+            </Text>
           </TouchableOpacity>
         </View>
         <Text style={{fontSize: 18, color: colors.white, padding: 10}}>
