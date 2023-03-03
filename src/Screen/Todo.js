@@ -47,7 +47,6 @@ function Todo(props) {
       setData([newaddedTask, ...state]);
     } catch (error) {
       alert('An invalid Error Occured');
-      console.log(error);
     }
   };
 
@@ -58,9 +57,7 @@ function Todo(props) {
     setData(clone);
     try {
       const data = await todoServices.updateTodo(id);
-      console.log(data);
     } catch (error) {
-      console.log(error);
       setData(data);
     }
   };
@@ -79,7 +76,6 @@ function Todo(props) {
         ToastAndroid.SHORT,
         ToastAndroid.CENTER,
       );
-      console.log(error);
       setData(original);
     }
   };

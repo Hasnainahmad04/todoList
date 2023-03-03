@@ -30,6 +30,7 @@ const AppModal = ({modalVisible, handleClose, handleAdd}) => {
       handleClose();
     }
   };
+
   const validate = () => {
     const {title} = task;
     const error = {};
