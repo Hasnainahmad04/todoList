@@ -1,27 +1,28 @@
 import React, {useEffect, useState} from 'react';
 import {
-  View,
-  StyleSheet,
-  FlatList,
   ActivityIndicator,
+  FlatList,
+  StyleSheet,
   Text,
   ToastAndroid,
+  View,
 } from 'react-native';
 
 import todoServices from '../api/todoServices';
-import TodoDeleteAction from '../components/TodoDeleteAction';
-import TodoItem from '../components/TodoItem';
-import Header from '../components/Header';
+import colors from '../Assets/colors';
 import AddBtn from '../components/AddBtn';
 import AppModal from '../components/AppModal';
-import colors from '../Assets/colors';
+import Header from '../components/Header';
+import TodoDeleteAction from '../components/TodoDeleteAction';
+import TodoItem from '../components/TodoItem';
 
 function Todo(props) {
   const [data, setData] = useState([]);
-  const [error, setError] = useState(null);
+  const [newTask, setNewTask] = useState({completed: false});
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
   const [page, setPage] = useState(1);
+  const [totalData, setTotalData] = useState(0);
 
   useEffect(() => {
     fetchData(page);
@@ -29,40 +30,61 @@ function Todo(props) {
 
   const fetchData = async page => {
     try {
-      const newdata = await todoServices.fetchData(page);
-      setData(prevData => [...prevData, ...newdata]);
+      const {newData, totalLength} = await todoServices.fetchData(page);
+      setTotalData(Math.ceil(totalLength / 10));
+      setData(prevData => [...prevData, ...newData]);
     } catch (error) {
-      setError(error);
+      ToastAndroid.show(
+        'Invalid Error Occured',
+        ToastAndroid.LONG,
+        ToastAndroid.CENTER,
+      );
     } finally {
       setLoading(false);
     }
   };
 
   const handleModal = () => setModal(true);
+  const handleModalClose = () => {
+    setModal(false);
+    setNewTask({completed: false});
+  };
 
   const handleAdd = async task => {
     try {
-      const newaddedTask = await todoServices.addTodo(task);
-      const state = [...data];
-      setData([newaddedTask, ...state]);
+      if (task.id) {
+        const updatedTask = await todoServices.addTodo(task);
+        const state = [...data];
+        const index = state.findIndex(item => item.id === task.id);
+        state[index] = updatedTask;
+        setData(state);
+      } else {
+        const newaddedTask = await todoServices.addTodo(task);
+        const state = [...data];
+        setData([newaddedTask, ...state]);
+      }
     } catch (error) {
       alert('An invalid Error Occured');
-      console.log(error);
     }
   };
 
   const handleUpdate = async id => {
     const clone = [...data];
     const index = clone.findIndex(item => item.id === id);
-    clone[index] = {...clone[index], completed: true};
+    clone[index] = {...clone[index], completed: !clone[index].completed};
     setData(clone);
+    const completed = clone[index].completed;
     try {
-      const data = await todoServices.updateTodo(id);
-      console.log(data);
+      const data = await todoServices.updateTodo(id, completed);
     } catch (error) {
       console.log(error);
       setData(data);
     }
+  };
+
+  const onEdit = task => {
+    setNewTask(task);
+    setModal(true);
   };
 
   const handlDelete = async id => {
@@ -79,28 +101,30 @@ function Todo(props) {
         ToastAndroid.SHORT,
         ToastAndroid.CENTER,
       );
-      console.log(error);
       setData(original);
     }
   };
 
   const onEndReached = async () => {
-    setPage(prevPage => prevPage + 1);
+    if (totalData > page) {
+      setPage(prevPage => prevPage + 1);
+    } else null;
   };
   return (
     <>
       <Header />
       <View style={styles['container']}>
         <Text style={styles['headerText']}>Today's Tasks</Text>
-
+        {loading && <ActivityIndicator size={30} />}
         <View style={styles['listContainer']}>
           <FlatList
             data={data}
-            keyExtractor={data => data.id}
+            keyExtractor={data => data.id + data.title}
             renderItem={({item}) => (
               <TodoItem
                 item={item}
                 handleUpdate={() => handleUpdate(item.id)}
+                handleEdit={() => onEdit(item)}
                 swipeAction={() => (
                   <TodoDeleteAction onPress={() => handlDelete(item.id)} />
                 )}
@@ -108,7 +132,6 @@ function Todo(props) {
             )}
             onEndReached={onEndReached}
             onEndReachedThreshold={0.9}
-            ListFooterComponent={ActivityIndicator}
           />
         </View>
 
@@ -119,8 +142,10 @@ function Todo(props) {
 
       <AppModal
         modalVisible={modal}
-        handleClose={() => setModal(false)}
+        handleClose={handleModalClose}
         handleAdd={handleAdd}
+        task={newTask}
+        setTask={setNewTask}
       />
     </>
   );
